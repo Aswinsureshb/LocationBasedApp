@@ -35,3 +35,13 @@ async def read_social_media(user_id: int, db: Session = Depends(get_db)):
     return db_social_media
 
 
+@app.post("/users/create", response_model=schemas.Users)
+async def create_user_endpoint(user_data: schemas.Users, db: Session = Depends(get_db)):
+    # Only allow 0 or 1 for LocationPermission
+    if user_data.LocationPermission not in [0, 1]:
+        raise HTTPException(status_code=400, detail="LocationPermission must be either 0 or 1.")
+    
+    # Call the CRUD function to create the user
+    created_user = crud.create_user(db=db, user_data=user_data)
+    
+    return created_user
