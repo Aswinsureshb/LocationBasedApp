@@ -1,13 +1,17 @@
-import decimal
+from decimal import Decimal
 from datetime import datetime
 from pydantic import BaseModel
+from sqlalchemy import Float
 
 class LocationsBase(BaseModel):
     LocationID:int
     UserID: int
-    Latitude: decimal
-    Longitude: decimal
+    Latitude: Decimal
+    Longitude: Decimal
     Timestamp: datetime 
+    
+    class Config:  # Config to allow arbitrary types
+        arbitrary_types_allowed = True
     
 class Locations(LocationsBase):
     pass
